@@ -79,9 +79,17 @@ if run:
     pbar = st.progress(0, text="Discovering and crawling…")
     last_total = 1
 
+    pbar = st.progress(0, text="Discovering and crawling…")
+    last_total = 1
+
     def on_progress(done, total, last_lead):
-        nonlocal last_total
+        # just use a global variable since Streamlit runs top-level
+        global last_total
         last_total = max(last_total, total or 1)
+        p = min(1.0, done / last_total) if last_total else 0
+        pbar.progress(int(p * 100), text=f"Crawling {done}/{last_total} domains…")
+        if last_lead:
+            status.info(f"Last saved: {last_lead.get('website','')}")
         p = min(1.0, done / last_total) if last_total else 0
         pbar.progress(int(p*100), text=f"Crawling {done}/{last_total} domains…")
         if last_lead:
