@@ -161,7 +161,7 @@ def crawl_domain(session, start_url, max_pages=10, timeout=12):
             continue
 
         html = r.text
-        soup = BeautifulSoup(html, "lxml")
+        soup = BeautifulSoup(html, "html.parser")
 
         if not company_name:
             company_name = guess_company_name(soup, norm_domain(root))
